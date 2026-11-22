@@ -16,4 +16,10 @@ public class SockMatcherCompatibilityScoreShould
         => LonelySock.CompatibilityWith(TotallyDifferentSock.WithSamePatternAs(LonelySock))
             .Should()
             .Be(25);
+
+    [Fact]
+    public void Be_20_When_Only_Colors_Are_The_Same()
+        => LonelySock.CompatibilityWith(TotallyDifferentSock with { Color = LonelySock.Color })
+            .Should()
+            .Be(20);
 }
