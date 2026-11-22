@@ -12,7 +12,7 @@ public static class SockMatcher
     private const int MatchBonus = 5;
     private const int PerfectMatchScore = 100;
 
-    private static int ComputeCompatibilityScore(Sock a, Sock b)
+    public static int ComputeCompatibilityScore(Sock a, Sock b)
     {
         var score = 0;
 
