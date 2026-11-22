@@ -40,4 +40,16 @@ public class SockMatcherCompatibilityScoreShould
         => LonelySock.CompatibilityWith(TotallyDifferentSock.WithSizeApartFrom(LonelySock, by: sizesApart))
             .Should()
             .Be(expectedScore);
+
+    [Theory]
+    [InlineData(0, 15)]
+    [InlineData(1, 12)]
+    [InlineData(2, 9)]
+    [InlineData(3, 6)]
+    [InlineData(4, 3)]
+    [InlineData(5, 0)]
+    public void Be_15_Minus_3_Per_Warmth_Point_Apart_When_Only_Warmths_Are_Compared(int warmthPointsApart, int expectedScore)
+        => LonelySock.CompatibilityWith(TotallyDifferentSock with { Warmth = LonelySock.Warmth + warmthPointsApart })
+            .Should()
+            .Be(expectedScore);
 }
