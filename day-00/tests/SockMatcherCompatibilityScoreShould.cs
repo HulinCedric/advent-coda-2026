@@ -12,4 +12,14 @@ public class SockMatcherCompatibilityScoreShould
         => SockMatcher.ComputeCompatibilityScore(Scanned, NothingInCommon)
             .Should()
             .Be(0);
+
+    [Fact]
+    public void Be_25_When_Only_Patterns_Are_The_Same()
+    {
+        var other = NothingInCommon with { Pattern = Scanned.Pattern };
+
+        SockMatcher.ComputeCompatibilityScore(Scanned, other)
+            .Should()
+            .Be(25);
+    }
 }
