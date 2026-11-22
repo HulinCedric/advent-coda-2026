@@ -9,5 +9,6 @@ public static class SockSetupExtensions
         public Sock WithSameMaterialAs(Sock other) => sock with { Material = other.Material };
         public Sock WithSizeApartFrom(Sock other, int by) => sock with { Size = other.Size + by };
         public Sock WithWarmthApartFrom(Sock other, int by) => sock with { Warmth = other.Warmth + by };
+        public Sock Twin() => sock with { };
     }
 }

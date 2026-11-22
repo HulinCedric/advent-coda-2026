@@ -55,7 +55,7 @@ public class SockMatcherCompatibilityScoreShould
 
     [Fact]
     public void Be_105_When_Socks_Are_Strictly_Identical()
-        => LonelySock.CompatibilityWith(LonelySock with { })
+        => LonelySock.CompatibilityWith(LonelySock.Twin())
             .Should()
             .Be(105);
 }
