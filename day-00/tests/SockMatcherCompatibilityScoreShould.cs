@@ -28,4 +28,16 @@ public class SockMatcherCompatibilityScoreShould
         => LonelySock.CompatibilityWith(TotallyDifferentSock.WithSameMaterialAs(LonelySock))
             .Should()
             .Be(20);
+
+    [Theory]
+    [InlineData(0, 20)]
+    [InlineData(1, 16)]
+    [InlineData(2, 12)]
+    [InlineData(3, 8)]
+    [InlineData(4, 4)]
+    [InlineData(5, 0)]
+    public void Be_20_Minus_4_Per_Size_Apart_When_Only_Sizes_Are_Compared(int sizesApart, int expectedScore)
+        => LonelySock.CompatibilityWith(TotallyDifferentSock with { Size = LonelySock.Size + sizesApart })
+            .Should()
+            .Be(expectedScore);
 }
