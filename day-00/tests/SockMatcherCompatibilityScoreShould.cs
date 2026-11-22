@@ -37,7 +37,7 @@ public class SockMatcherCompatibilityScoreShould
     [InlineData(4, 4)]
     [InlineData(5, 0)]
     public void Be_20_Minus_4_Per_Size_Apart_When_Only_Sizes_Are_Compared(int sizesApart, int expectedScore)
-        => LonelySock.CompatibilityWith(TotallyDifferentSock with { Size = LonelySock.Size + sizesApart })
+        => LonelySock.CompatibilityWith(TotallyDifferentSock.WithSizeApartFrom(LonelySock, by: sizesApart))
             .Should()
             .Be(expectedScore);
 }
