@@ -36,5 +36,5 @@ public static class SockMatcher
 
     public static bool IsPair(Sock a, Sock b) => IsPair(ComputeCompatibilityScore(a, b));
 
-    public static bool IsPair(int compatibilityScore) => compatibilityScore == PerfectMatchScore;
+    public static bool IsPair(int compatibilityScore) => compatibilityScore >= PerfectMatchScore;
 }
