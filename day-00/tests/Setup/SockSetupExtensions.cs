@@ -1,4 +1,4 @@
-namespace SockMatch.Tests;
+namespace SockMatch.Tests.Setup;
 
 public static class SockSetupExtensions
 {

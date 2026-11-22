@@ -1,5 +1,7 @@
 using FluentAssertions;
-using static SockMatch.Tests.Socks;
+using SockMatch.Tests.Actions;
+using SockMatch.Tests.Setup;
+using static SockMatch.Tests.Setup.Socks;
 
 namespace SockMatch.Tests;
 

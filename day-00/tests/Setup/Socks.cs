@@ -1,4 +1,4 @@
-namespace SockMatch.Tests;
+namespace SockMatch.Tests.Setup;
 
 internal static class Socks
 {
