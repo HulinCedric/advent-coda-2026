@@ -11,4 +11,12 @@ public class SockMatcherIsPairShould
         => SockMatcher.IsPair(compatibilityScore)
             .Should()
             .BeFalse();
+
+    [Theory]
+    [InlineData(100)]
+    [InlineData(105)]
+    public void Be_True_When_Score_Is_100_Or_More(int compatibilityScore)
+        => SockMatcher.IsPair(compatibilityScore)
+            .Should()
+            .BeTrue();
 }
