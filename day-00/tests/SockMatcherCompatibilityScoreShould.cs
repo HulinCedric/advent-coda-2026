@@ -52,4 +52,10 @@ public class SockMatcherCompatibilityScoreShould
         => LonelySock.CompatibilityWith(TotallyDifferentSock.WithWarmthApartFrom(LonelySock, by: warmthPointsApart))
             .Should()
             .Be(expectedScore);
+
+    [Fact]
+    public void Be_105_When_Socks_Are_Strictly_Identical()
+        => LonelySock.CompatibilityWith(LonelySock with { })
+            .Should()
+            .Be(105);
 }
