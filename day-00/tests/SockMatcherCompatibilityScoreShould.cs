@@ -14,7 +14,7 @@ public class SockMatcherCompatibilityScoreShould
     [Fact]
     public void Be_25_When_Only_Patterns_Are_The_Same()
     {
-        var other = TotallyDifferentSock with { Pattern = LonelySock.Pattern };
+        var other = TotallyDifferentSock.WithSamePatternAs(LonelySock);
 
         SockMatcher.ComputeCompatibilityScore(LonelySock, other)
             .Should()
