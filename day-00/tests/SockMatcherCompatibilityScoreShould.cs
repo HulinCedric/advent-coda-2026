@@ -7,17 +7,13 @@ public class SockMatcherCompatibilityScoreShould
 {
     [Fact]
     public void Be_0_When_Nothing_Is_In_Common()
-        => SockMatcher.ComputeCompatibilityScore(LonelySock, TotallyDifferentSock)
+        => LonelySock.CompatibilityWith(TotallyDifferentSock)
             .Should()
             .Be(0);
 
     [Fact]
     public void Be_25_When_Only_Patterns_Are_The_Same()
-    {
-        var other = TotallyDifferentSock.WithSamePatternAs(LonelySock);
-
-        SockMatcher.ComputeCompatibilityScore(LonelySock, other)
+        => LonelySock.CompatibilityWith(TotallyDifferentSock.WithSamePatternAs(LonelySock))
             .Should()
             .Be(25);
-    }
 }
