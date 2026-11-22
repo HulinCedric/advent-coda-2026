@@ -1,4 +1,4 @@
-namespace SockMatch.Tests.Actions;
+namespace SockMatch.Tests.Setup;
 
 public static class CompatibilityScoreExtensions
 {
