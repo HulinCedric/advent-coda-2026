@@ -1,2 +1,7 @@
 <Solution>
+  <Folder Name="/Chapitre 0 - Avant que tout commence/">
+    <File Path="day-00/README.md" />
+    <Project Path="day-00/src/SockMatch.csproj" />
+    <Project Path="day-00/tests/SockMatch.Tests.csproj" />
+  </Folder>
 </Solution>
