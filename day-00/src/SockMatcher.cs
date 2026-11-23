@@ -4,7 +4,6 @@ namespace SockMatch;
 
 public static class SockMatcher
 {
-    private const int QualityBonus = 5;
     private const int PairThreshold = 100;
 
     private static readonly PatternRule Pattern = new();
@@ -12,25 +11,18 @@ public static class SockMatcher
     private static readonly MaterialRule Material = new();
     private static readonly SizeRule Size = new();
     private static readonly WarmthRule Warmth = new();
+    private static readonly QualityBonusRule QualityBonus = new();
 
     public static int ComputeCompatibilityScore(Sock lonelySock, Sock sockFromStock)
     {
         var score = 0;
-
-        var identicalPattern = lonelySock.Pattern == sockFromStock.Pattern;
-        var identicalColor = lonelySock.Color == sockFromStock.Color;
-        var identicalMaterial = lonelySock.Material == sockFromStock.Material;
-        var identicalSize = lonelySock.Size == sockFromStock.Size;
-        var identicalWarmth = lonelySock.Warmth == sockFromStock.Warmth;
 
         score += PatternPoints(lonelySock, sockFromStock);
         score += ColorPoints(lonelySock, sockFromStock);
         score += MaterialPoints(lonelySock, sockFromStock);
         score += SizePoints(lonelySock, sockFromStock);
         score += WarmthPoints(lonelySock, sockFromStock);
-
-        if (identicalPattern && identicalColor && identicalMaterial && identicalSize && identicalWarmth)
-            score += QualityBonus;
+        score += QualityBonusPoints(lonelySock, sockFromStock);
 
         return score;
     }
@@ -54,4 +46,7 @@ public static class SockMatcher
 
     private static int WarmthPoints(Sock lonelySock, Sock sockFromStock)
         => Warmth.PointsFor(lonelySock, sockFromStock);
+
+    private static int QualityBonusPoints(Sock lonelySock, Sock sockFromStock)
+        => QualityBonus.PointsFor(lonelySock, sockFromStock);
 }
