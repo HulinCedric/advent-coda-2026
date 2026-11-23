@@ -2,51 +2,55 @@ namespace SockMatch;
 
 public static class SockMatcher
 {
-    private const int PatternWeight = 25;
-    private const int ColorWeight = 20;
-    private const int MaterialWeight = 20;
-    private const int SizeWeight = 20;
-    private const int SizePenaltyPerPoint = 4;
-    private const int WarmthWeight = 15;
-    private const int WarmthPenaltyPerPoint = 3;
-    private const int MatchBonus = 5;
-    private const int PerfectMatchScore = 100;
+    private const int IdenticalPatternPoints = 25;
+    private const int IdenticalColorPoints = 20;
+    private const int IdenticalMaterialPoints = 20;
+    private const int MaxSizePoints = 20;
+    private const int PenaltyPerSizeApart = 4;
+    private const int MaxWarmthPoints = 15;
+    private const int PenaltyPerWarmthPointApart = 3;
+    private const int QualityBonus = 5;
+    private const int PairThreshold = 100;
 
-    public static int ComputeCompatibilityScore(Sock a, Sock b)
+    public static int ComputeCompatibilityScore(Sock lonelySock, Sock sockFromStock)
     {
         var score = 0;
 
-        var samePattern = a.Pattern == b.Pattern;
-        var sameColor = a.Color == b.Color;
-        var sameMaterial = a.Material == b.Material;
-        var sameSize = a.Size == b.Size;
-        var sameWarmth = a.Warmth == b.Warmth;
+        var identicalPattern = lonelySock.Pattern == sockFromStock.Pattern;
+        var identicalColor = lonelySock.Color == sockFromStock.Color;
+        var identicalMaterial = lonelySock.Material == sockFromStock.Material;
+        var identicalSize = lonelySock.Size == sockFromStock.Size;
+        var identicalWarmth = lonelySock.Warmth == sockFromStock.Warmth;
 
-        score += PatternPoints(a, b);
-        score += ColorPoints(a, b);
-        score += MaterialPoints(a, b);
-        score += SizePoints(a, b);
-        score += WarmthPoints(a, b);
+        score += PatternPoints(lonelySock, sockFromStock);
+        score += ColorPoints(lonelySock, sockFromStock);
+        score += MaterialPoints(lonelySock, sockFromStock);
+        score += SizePoints(lonelySock, sockFromStock);
+        score += WarmthPoints(lonelySock, sockFromStock);
 
-        if (samePattern && sameColor && sameMaterial && sameSize && sameWarmth)
-            score += MatchBonus;
+        if (identicalPattern && identicalColor && identicalMaterial && identicalSize && identicalWarmth)
+            score += QualityBonus;
 
         return score;
     }
 
-    public static bool IsPair(Sock a, Sock b) => IsPair(ComputeCompatibilityScore(a, b));
+    public static bool IsPair(Sock lonelySock, Sock sockFromStock)
+        => IsPair(ComputeCompatibilityScore(lonelySock, sockFromStock));
 
-    public static bool IsPair(int compatibilityScore) => compatibilityScore >= PerfectMatchScore;
+    public static bool IsPair(int compatibilityScore) => compatibilityScore >= PairThreshold;
 
-    private static int PatternPoints(Sock a, Sock b) => a.Pattern == b.Pattern ? PatternWeight : 0;
+    private static int PatternPoints(Sock lonelySock, Sock sockFromStock)
+        => lonelySock.Pattern == sockFromStock.Pattern ? IdenticalPatternPoints : 0;
 
-    private static int ColorPoints(Sock a, Sock b) => a.Color == b.Color ? ColorWeight : 0;
+    private static int ColorPoints(Sock lonelySock, Sock sockFromStock)
+        => lonelySock.Color == sockFromStock.Color ? IdenticalColorPoints : 0;
 
-    private static int MaterialPoints(Sock a, Sock b) => a.Material == b.Material ? MaterialWeight : 0;
+    private static int MaterialPoints(Sock lonelySock, Sock sockFromStock)
+        => lonelySock.Material == sockFromStock.Material ? IdenticalMaterialPoints : 0;
 
-    private static int SizePoints(Sock a, Sock b)
-        => Math.Max(0, SizeWeight - Math.Abs(a.Size - b.Size) * SizePenaltyPerPoint);
+    private static int SizePoints(Sock lonelySock, Sock sockFromStock)
+        => Math.Max(0, MaxSizePoints - Math.Abs(lonelySock.Size - sockFromStock.Size) * PenaltyPerSizeApart);
 
-    private static int WarmthPoints(Sock a, Sock b)
-        => Math.Max(0, WarmthWeight - Math.Abs(a.Warmth - b.Warmth) * WarmthPenaltyPerPoint);
+    private static int WarmthPoints(Sock lonelySock, Sock sockFromStock)
+        => Math.Max(0, MaxWarmthPoints - Math.Abs(lonelySock.Warmth - sockFromStock.Warmth) * PenaltyPerWarmthPointApart);
 }
