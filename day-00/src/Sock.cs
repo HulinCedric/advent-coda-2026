@@ -1,3 +1,3 @@
 namespace SockMatch;
 
-public record Sock(int Size, string Color, string Material, string Pattern, int Warmth);
+public sealed record Sock(int Size, string Color, string Material, string Pattern, int Warmth);
