@@ -1,8 +1,9 @@
+using SockMatch.CompatibilityRules;
+
 namespace SockMatch;
 
 public static class SockMatcher
 {
-    private const int IdenticalPatternPoints = 25;
     private const int IdenticalColorPoints = 20;
     private const int IdenticalMaterialPoints = 20;
     private const int MaxSizePoints = 20;
@@ -11,6 +12,8 @@ public static class SockMatcher
     private const int PenaltyPerWarmthPointApart = 3;
     private const int QualityBonus = 5;
     private const int PairThreshold = 100;
+
+    private static readonly PatternRule Pattern = new();
 
     public static int ComputeCompatibilityScore(Sock lonelySock, Sock sockFromStock)
     {
@@ -40,7 +43,7 @@ public static class SockMatcher
     public static bool IsPair(int compatibilityScore) => compatibilityScore >= PairThreshold;
 
     private static int PatternPoints(Sock lonelySock, Sock sockFromStock)
-        => lonelySock.Pattern == sockFromStock.Pattern ? IdenticalPatternPoints : 0;
+        => Pattern.PointsFor(lonelySock, sockFromStock);
 
     private static int ColorPoints(Sock lonelySock, Sock sockFromStock)
         => lonelySock.Color == sockFromStock.Color ? IdenticalColorPoints : 0;
