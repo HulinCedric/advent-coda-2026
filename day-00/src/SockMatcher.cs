@@ -4,7 +4,6 @@ namespace SockMatch;
 
 public static class SockMatcher
 {
-    private const int IdenticalMaterialPoints = 20;
     private const int MaxSizePoints = 20;
     private const int PenaltyPerSizeApart = 4;
     private const int MaxWarmthPoints = 15;
@@ -14,6 +13,7 @@ public static class SockMatcher
 
     private static readonly PatternRule Pattern = new();
     private static readonly ColorRule Color = new();
+    private static readonly MaterialRule Material = new();
 
     public static int ComputeCompatibilityScore(Sock lonelySock, Sock sockFromStock)
     {
@@ -49,7 +49,7 @@ public static class SockMatcher
         => Color.PointsFor(lonelySock, sockFromStock);
 
     private static int MaterialPoints(Sock lonelySock, Sock sockFromStock)
-        => lonelySock.Material == sockFromStock.Material ? IdenticalMaterialPoints : 0;
+        => Material.PointsFor(lonelySock, sockFromStock);
 
     private static int SizePoints(Sock lonelySock, Sock sockFromStock)
         => Math.Max(0, MaxSizePoints - Math.Abs(lonelySock.Size - sockFromStock.Size) * PenaltyPerSizeApart);
