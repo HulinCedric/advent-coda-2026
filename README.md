@@ -8,3 +8,4 @@ Les énoncés et le code de départ proviennent de [codadvent.fr](https://codadv
 
 | Chapitre | Challenge | Objectif | Langage |
 |----------|-----------|----------|---------|
+| 00       | [Avant que tout commence](day-00/README.md) | Corriger le bug qui empêche deux chaussettes identiques de former une paire. | C# |
