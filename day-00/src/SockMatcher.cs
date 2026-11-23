@@ -22,11 +22,11 @@ public static class SockMatcher
         var sameSize = a.Size == b.Size;
         var sameWarmth = a.Warmth == b.Warmth;
 
-        score += samePattern ? PatternWeight : 0;
-        score += sameColor ? ColorWeight : 0;
-        score += sameMaterial ? MaterialWeight : 0;
-        score += Math.Max(0, SizeWeight - Math.Abs(a.Size - b.Size) * SizePenaltyPerPoint);
-        score += Math.Max(0, WarmthWeight - Math.Abs(a.Warmth - b.Warmth) * WarmthPenaltyPerPoint);
+        score += PatternPoints(a, b);
+        score += ColorPoints(a, b);
+        score += MaterialPoints(a, b);
+        score += SizePoints(a, b);
+        score += WarmthPoints(a, b);
 
         if (samePattern && sameColor && sameMaterial && sameSize && sameWarmth)
             score += MatchBonus;
@@ -37,4 +37,16 @@ public static class SockMatcher
     public static bool IsPair(Sock a, Sock b) => IsPair(ComputeCompatibilityScore(a, b));
 
     public static bool IsPair(int compatibilityScore) => compatibilityScore >= PerfectMatchScore;
+
+    private static int PatternPoints(Sock a, Sock b) => a.Pattern == b.Pattern ? PatternWeight : 0;
+
+    private static int ColorPoints(Sock a, Sock b) => a.Color == b.Color ? ColorWeight : 0;
+
+    private static int MaterialPoints(Sock a, Sock b) => a.Material == b.Material ? MaterialWeight : 0;
+
+    private static int SizePoints(Sock a, Sock b)
+        => Math.Max(0, SizeWeight - Math.Abs(a.Size - b.Size) * SizePenaltyPerPoint);
+
+    private static int WarmthPoints(Sock a, Sock b)
+        => Math.Max(0, WarmthWeight - Math.Abs(a.Warmth - b.Warmth) * WarmthPenaltyPerPoint);
 }
