@@ -4,8 +4,6 @@ namespace SockMatch;
 
 public static class SockMatcher
 {
-    private const int MaxWarmthPoints = 15;
-    private const int PenaltyPerWarmthPointApart = 3;
     private const int QualityBonus = 5;
     private const int PairThreshold = 100;
 
@@ -13,6 +11,7 @@ public static class SockMatcher
     private static readonly ColorRule Color = new();
     private static readonly MaterialRule Material = new();
     private static readonly SizeRule Size = new();
+    private static readonly WarmthRule Warmth = new();
 
     public static int ComputeCompatibilityScore(Sock lonelySock, Sock sockFromStock)
     {
@@ -54,5 +53,5 @@ public static class SockMatcher
         => Size.PointsFor(lonelySock, sockFromStock);
 
     private static int WarmthPoints(Sock lonelySock, Sock sockFromStock)
-        => Math.Max(0, MaxWarmthPoints - Math.Abs(lonelySock.Warmth - sockFromStock.Warmth) * PenaltyPerWarmthPointApart);
+        => Warmth.PointsFor(lonelySock, sockFromStock);
 }
