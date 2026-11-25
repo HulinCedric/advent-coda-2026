@@ -18,6 +18,6 @@
         <PackageReference Include="xunit.v3" />
     </ItemGroup>
     <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true' And $(MSBuildProjectName.EndsWith('.Tests'))">
-        <TestingPlatformCommandLineArguments>$(TestingPlatformCommandLineArguments) --report-xunit-trx --report-xunit-trx-filename $(MSBuildProjectName).trx --report-xunit-markdown --report-xunit-markdown-filename $(MSBuildProjectName).md</TestingPlatformCommandLineArguments>
+        <TestingPlatformCommandLineArguments>$(TestingPlatformCommandLineArguments) --report-xunit-trx --report-xunit-trx-filename $(MSBuildProjectName).trx</TestingPlatformCommandLineArguments>
     </PropertyGroup>
 </Project>

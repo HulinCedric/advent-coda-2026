@@ -11,6 +11,9 @@ on:
 
 permissions:
   contents: read
+  # dorny/test-reporter creates a check run with the test results
+  actions: read
+  checks: write
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -41,20 +44,12 @@ jobs:
       if: ${{ hashFiles('**/*.Tests.csproj') != '' }}
       run: dotnet test --no-build --configuration Release --results-directory "${{ github.workspace }}/TestResults"
 
-    - name: Test summary
+    - name: Test report
       if: ${{ !cancelled() }}
-      run: |
-        for report in TestResults/*.md; do
-          [ -e "$report" ] || continue
-          echo "## $(basename "$report" .md)" >> "$GITHUB_STEP_SUMMARY"
-          tail -n +2 "$report" >> "$GITHUB_STEP_SUMMARY"
-          echo >> "$GITHUB_STEP_SUMMARY"
-        done
-
-    - name: Upload test results
-      if: ${{ !cancelled() }}
-      uses: actions/upload-artifact@v7
+      uses: dorny/test-reporter@v3
       with:
-        name: test-results
+        name: Test results
         path: TestResults/*.trx
-        if-no-files-found: ignore
+        reporter: dotnet-trx
+        # no TRX file is produced when there is no test project
+        fail-on-empty: false
