@@ -53,3 +53,24 @@ jobs:
         reporter: dotnet-trx
         # no TRX file is produced when there is no test project
         fail-on-empty: false
+
+    - name: Mutation testing
+      # only on pull requests, for the days they change
+      if: ${{ github.event_name == 'pull_request' }}
+      # Stryker's Microsoft Testing Platform runner is still in preview
+      continue-on-error: true
+      run: |
+        git fetch --no-tags --depth=1 origin main
+        days=$(git diff --name-only FETCH_HEAD HEAD -- 'day-*' | cut -d/ -f1 | sort -u)
+        [ -n "$days" ] || exit 0
+        dotnet tool restore
+        for day in $days; do
+          for project in $(find "$day" -name '*.Tests.csproj'); do
+            name=$(basename "$project" .csproj)
+            output="$RUNNER_TEMP/stryker/$name"
+            (cd "$(dirname "$project")" && dotnet stryker --test-runner mtp --reporter markdown --reporter progress --output "$output")
+            echo "## Mutation testing: $day ($name)" >> "$GITHUB_STEP_SUMMARY"
+            tail -n +2 "$output/reports/mutation-report.md" >> "$GITHUB_STEP_SUMMARY"
+            echo >> "$GITHUB_STEP_SUMMARY"
+          done
+        done
