@@ -1,0 +1,43 @@
+name: Mutation testing
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  stryker:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v7
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v6
+      with:
+        global-json-file: global.json
+
+    - name: Restore tools
+      run: dotnet tool restore
+
+    - name: Mutation testing
+      # Stryker's Microsoft Testing Platform runner is still in preview
+      run: |
+        status=0
+        for project in $(find . -path './day-*' -name '*.Tests.csproj' | sort); do
+          day=$(echo "$project" | cut -d/ -f2)
+          name=$(basename "$project" .csproj)
+          output="$RUNNER_TEMP/stryker/$name"
+          if (cd "$(dirname "$project")" && dotnet stryker --test-runner mtp --reporter markdown --reporter progress --output "$output"); then
+            echo "## $day ($name)" >> "$GITHUB_STEP_SUMMARY"
+            tail -n +2 "$output/reports/mutation-report.md" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "## $day ($name): Stryker failed, see the log" >> "$GITHUB_STEP_SUMMARY"
+            status=1
+          fi
+          echo >> "$GITHUB_STEP_SUMMARY"
+        done
+        exit $status
